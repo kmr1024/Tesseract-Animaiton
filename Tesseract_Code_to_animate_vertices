@@ -1,0 +1,83 @@
+import bpy
+import sys
+sys.path.append(r'C:\Users\Kiran M R\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages')
+import numpy as np
+
+# Animation parameters
+axis1, axis2 = 1, 3  # Axes for rotation
+d = 4  # Perspective distance
+num_frames = 360  # Number of frames in the animation
+frame_rate = 60.0  # Frame rate
+freq = 0.5  # Rotation frequency
+rot_dir = 1  # Rotation direction
+
+# Get the active object (assuming it's a mesh object named 'tesseract_fresh')
+obj = bpy.data.objects['tesseract_fresh']
+mesh = obj.data
+
+# Initialize vertex coordinates of the tesseract in 4D
+vert = np.array([])
+for i in range(16):
+    b = format(i, 'b').zfill(4)
+    for j in range(4):
+        vert = np.append(vert, 1 if int(b[j]) == 0 else -1)
+vert = vert.reshape((16, 4))
+
+# Function to create a projection matrix for 4D to 3D projection
+def proj_mat(p):
+    a = 1 / (d - p[3])  # Perspective scaling factor based on 4th dimension
+    mat = np.zeros((3, 4))
+    for i in range(3):
+        mat[i, i] = a
+    x3d = np.dot(mat, p)
+    return x3d
+
+# Function to create a 4D rotation matrix for rotating about a-b plane
+def rot(a, b, theta):
+    theta = theta * np.pi / 180  # Convert theta to radians
+    R = np.zeros((4, 4))
+    R[a, a] = np.cos(theta)
+    R[a, b] = -np.sin(theta)
+    R[b, a] = np.sin(theta)
+    R[b, b] = np.cos(theta)
+    for i in range(4):
+        if i != a and i != b:
+            R[i, i] = 1
+    return R
+
+# Function to rotate all points of the tesseract
+def rot_cube(a, b, theta, points):
+    rot_new = np.zeros((16, 4))
+    R = rot(a, b, theta)
+    for v in range(16):
+        rot_new[v] = np.dot(R, points[v])
+    return rot_new
+
+# Get the mesh vertices
+vertices = mesh.vertices
+
+# The array below contains index of the corresponding coordinate of a vertex similar to the vertex of the model
+G = [0, 2, 4, 6, 8, 10, 12, 14, 9, 13, 5, 15, 3, 1, 7, 11]
+
+# Loop over each frame to animate the tesseract
+for f in range(num_frames):
+    
+    # Calculate rotation angle for the current frame
+    wt = 360 * freq / frame_rate * rot_dir
+    vert = rot_cube(axis1, axis2, wt, vert)  # Rotate the tesseract vertices
+
+    vert_3d = np.empty((0, 3), float)
+  
+    for x in vert:
+        print(x)
+        vert_3d = np.vstack([vert_3d, proj_mat(x)])  # Project 4D vertices to 3D
+
+    print(vert_3d)
+
+    # Update the mesh vertices with the new positions
+    for k in range(16):
+        vertices[k].co = tuple(16 * vert_3d[G[k]])
+        vertices[k].keyframe_insert(data_path="co", frame=f + 1)
+
+# Set the end frame of the animation
+bpy.context.scene.frame_end = num_frames
