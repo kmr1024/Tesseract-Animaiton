@@ -43,7 +43,6 @@ To visualize a tesseract in our three-dimensional world, we project it from 4D t
     - The main loop iterates over each frame, rotating the tesseract and projecting its vertices into 3D space.
     - The 3D coordinates are then used to update the mesh vertices in Blender, creating the keyframes for the animation.
 
-9. **Setting Animation End Frame:**
-    - The end frame for the animation is set in Blender's scene context.
+In Blender, there were additional components which enabled the creation  and aesthetics of the 3D model of Tesseract. 
 
 This project involves complex mathematical operations for 4D geometry manipulation and demonstrates how Blender's scripting capabilities can be leveraged to create dynamic visualizations of higher-dimensional objects.
