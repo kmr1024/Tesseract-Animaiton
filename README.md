@@ -2,7 +2,7 @@
 Tesseract animation using Blender and Python
 
 # Important Info
-The "Tesseract.blend" file can only be opened with Blender Animation Software and you have to press the play button to see the animation
+The "tesseract.blend" file can only be opened with Blender Animation Software and you have to press the play button to see the animation
 
 # Project Summary: Tesseract Animation in Blender
 
