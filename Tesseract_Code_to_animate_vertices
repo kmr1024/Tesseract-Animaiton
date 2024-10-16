@@ -11,7 +11,7 @@ frame_rate = 60.0  # Frame rate
 freq = 0.5  # Rotation frequency
 rot_dir = 1  # Rotation direction
 
-# Get the active object (assuming it's a mesh object named 'tesseract_fresh')
+# Get the active object (mesh object named 'tesseract_fresh' in the '.blend' file)
 obj = bpy.data.objects['tesseract_fresh']
 mesh = obj.data
 
