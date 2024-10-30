@@ -48,4 +48,4 @@ To visualize a tesseract in our three-dimensional world, we project it from 4D t
 
 In Blender, there were additional components which enabled the creation  and aesthetics of the 3D model of Tesseract. 
 
-This project involves complex mathematical operations for 4D geometry manipulation and demonstrates how Blender's scripting capabilities can be leveraged to create dynamic visualizations of higher-dimensional objects.
+This project involves simple mathematical operations for 4D geometry manipulation and demonstrates how Blender's scripting capabilities can be leveraged to create dynamic visualizations of higher-dimensional objects.
